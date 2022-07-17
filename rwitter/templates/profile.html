@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<div class="column is-half">
+<form action="" method="post">
+  {% csrf_token %}
+    <h1 class="title">{{profile.user.username|title}} Tweets</h1>
+    <div class="buttons">
+      {%if profile in user.profile.follows.all%}
+        <button class="button is-static">Follow</button>
+        <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
+      {% else %}
+        <button class="button is-primary" name="follow" value="follow">Follow</button>
+        <button class="button is-danger">Unfollow</button>
+      {% endif %}
+    </div>
+</form>
+<div class="block">
+  <div class="content">
+    {% for rweet in profile.user.rweets.all%}
+      <div class="box">
+        {{rweet.body}}
+        <br>
+        <span class="is-small has-text-grey-light">
+          {{rweet.created_at}}
+        </span>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+<div class="column is-half">
+  <div class="block">
+    <a href="{% url 'profile_list' %}">
+        <button class="button is-primary is-outlined ">
+            All Profiles
+        </button>
+    </a>
+  </div>
+
+  <p class="title">{{profile.user.username|title}} follows:</p>
+  <ul>
+      {% for following in profile.follows.all %}
+      <li><a href="{% url 'profile' following.pk %}"> {{ following | title}}</a></li>
+      {% endfor %}
+  </ul>
+  <hr>
+  <div class="block">
+    <h3 class="title">Followed by: </h3>
+    <ul>
+      {% for follower in profile.followed_by.all%}
+      <li><a href="{% url 'profile' follower.pk %}">{{follower|title}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

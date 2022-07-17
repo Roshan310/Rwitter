@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="column">
+    {% for rweet in rweets%}
+        <div class="box has-background-white-bis">
+            {{rweet.body}}
+            <br>
+            <span class="is-small has-text-grey-light">
+                {{rweet.created_at}} by {{rweet.user| title}}
+            </span>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="column is-one-third">
+    <div class="block">
+        <a href="{% url 'profile_list'%}">
+            <button class="button is is-outlined is-fullwidth">
+                All profiles
+            </button>
+        </a>
+    </div>
+    <div class="block">
+        <a href="{% url 'profile' request.user.profile.id%}">
+            <button class="button is-info is-light is-fullwidth">
+                My Profile
+            </button>
+        </a>
+    </div>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <button class="button is-info is-fullwidth is-medium mt-5">
+            Rweet
+        </button>
+    </form>
+</div>
+
+{% endblock content %}
